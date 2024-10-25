@@ -9,7 +9,7 @@ void dfs(int x, int y, auto &graph, auto &ans) {
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < m; ++j) {
         if (graph[i][j]) {
-          cout << i << " " << j << " ";
+          cout << i + 1 << " " << j + 1 << " ";
           for (int k = 0; k < 4; ++k) cout << ans[i][j][k] << " ";
           cout << endl;
         }
@@ -21,6 +21,13 @@ void dfs(int x, int y, auto &graph, auto &ans) {
   if (deg) {
     if (down[y]) deg--, ans[x][y][0] = 1;
     if (r) deg--, ans[x][y][2] = 1;
+    if (deg == 0) {
+      down[y] = 0, r = 0;
+      if (y == m - 1)
+        dfs(x + 1, 0, graph, ans);
+      else
+        dfs(x, y + 1, graph, ans);
+    }
     if (deg == 1 && y != m - 1) {
       down[y] = 0, r = 1;
       ans[x][y][3] = 1;
@@ -44,14 +51,13 @@ void dfs(int x, int y, auto &graph, auto &ans) {
     down[y] = tmpd, r = tmpr;
     for (int i = 0; i < 4; ++i) ans[x][y][i] = 0;
   } else {
-    if (down[y] || r)
-      return;
-    else {
-      if (y == m - 1)
-        dfs(x + 1, 0, graph, ans);
-      else
-        dfs(x, y + 1, graph, ans);
-    }
+    if (down[y] && r) return;
+    if (y == m - 1 && r) return;
+    if (x == n - 1 && down[y]) return;
+    if (y == m - 1)
+      dfs(x + 1, 0, graph, ans);
+    else
+      dfs(x, y + 1, graph, ans);
   }
 }
 int main() {
