@@ -70,6 +70,6 @@ int main() {
     }
   }
   dfs(0, 0, graph, ans);
-  cout << "No Solution!" << endl;
+  cout << "No Solution" << endl;
   return 0;
 }
